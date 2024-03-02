@@ -14,8 +14,8 @@ export default {
         "secondary": "#D9D9D9"
       },
       colors: {
-        "primary": "#00BDFF",
-        "primary-hover": "#00B0FF",
+        "button-primary": "#00BDFF",
+        "button-primary-hover": "#00B0FF",
         "button-positive-primary": "#5E17F5",
         "button-positive-hover": "#5E17A5",
         "button-negative-primary": "#FF4E3A",

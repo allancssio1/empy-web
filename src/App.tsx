@@ -6,6 +6,7 @@ import {
   PiClipboardText,
   PiMoneyThin,
   PiUserCircleLight,
+  PiPlusCircleLight,
 } from 'react-icons/pi'
 import { HiOutlineSun } from 'react-icons/hi'
 
@@ -54,7 +55,28 @@ function App() {
           </div>
         </div>
       </section>
-      <section className="container">content</section>
+      <section className="flex flex-col w-full p-9 gap-4">
+        <h1 className="font-bold text-3xl ">Carteira de Clientes</h1>
+        <div className="gap-2">
+          <p>Selecione o Assistente Comercial</p>
+          <div className="flex gap-3">
+            <div className="flex items-center bg-primary w-[388px] h-[43px] rounded-xl p-3 ">
+              <select id="assitent" className=" bg-primary" name="assitent">
+                <option value="fulano">Fulano</option>
+                <option value="sicrano">Sicrano</option>
+              </select>
+            </div>
+            <button className="px-4 py-3 rounded-3xl bg-button-primary hover:bg-button-primary-hover">
+              <PiPlusCircleLight color="white" size={22} />
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <div></div>
+          <div></div>
+        </div>
+      </section>
     </main>
   )
 }
