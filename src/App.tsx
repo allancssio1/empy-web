@@ -9,6 +9,7 @@ import {
   PiPlusCircleLight,
 } from 'react-icons/pi'
 import { HiOutlineSun } from 'react-icons/hi'
+import { Options } from './components/show-options'
 
 function App() {
   return (
@@ -76,9 +77,19 @@ function App() {
           </div>
         </div>
 
-        <div>
-          <div></div>
-          <div></div>
+        <div className="grid grid-cols-2 gap-6">
+          <Options
+            title="Clientes (Não vinculadao)"
+            amount={23}
+            buttonAddCustomer={true}
+            buttonLinker="link"
+          />
+          <Options
+            title="Carteira do Fulano"
+            amount={23}
+            buttonAddCustomer={false}
+            buttonLinker="unlink"
+          />
         </div>
       </section>
     </main>
