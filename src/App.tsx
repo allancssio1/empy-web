@@ -58,10 +58,14 @@ function App() {
       <section className="flex flex-col w-full p-9 gap-4">
         <h1 className="font-bold text-3xl ">Carteira de Clientes</h1>
         <div className="gap-2">
-          <p>Selecione o Assistente Comercial</p>
+          <p className="mb-2">Selecione o Assistente Comercial</p>
           <div className="flex gap-3">
             <div className="flex items-center bg-primary w-[388px] h-[43px] rounded-xl p-3 ">
-              <select id="assitent" className=" bg-primary" name="assitent">
+              <select
+                id="assitent"
+                className=" bg-primary w-full inline-block border-none outline-none "
+                name="assitent"
+              >
                 <option value="fulano">Fulano</option>
                 <option value="sicrano">Sicrano</option>
               </select>

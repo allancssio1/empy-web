@@ -13,16 +13,3 @@
 *{
   @apply font-roboto 
 }
-
-select {
-  width: 100%;
-  display: inline-block;
-  border: none;
-  outline: none;
-}
-.select {
-}
-div:focus-within {
-  box-shadow: 0px 0px 0px 2px blue;
-}
-
