@@ -10,6 +10,7 @@ type OptionsProps = {
   amount: number
   buttonAddCustomer: boolean
   buttonLinker: 'link' | 'unlink'
+  toggleModal: () => void
 }
 
 export const Options = ({
@@ -17,6 +18,7 @@ export const Options = ({
   amount,
   buttonAddCustomer,
   buttonLinker,
+  toggleModal,
 }: OptionsProps) => {
   const text = buttonLinker === 'link' ? 'Vincular' : 'Desvincular'
   const buttonColorCustomer =
@@ -46,7 +48,12 @@ export const Options = ({
         </div>
         <div className="flex items-center gap-2 text-button-cancel">
           {buttonAddCustomer && (
-            <button className="flex items-center rounded-[18px] px-3 py-0.5 gap-2 bg-button-primary hover:bg-button-primary-hover">
+            <button
+              onClick={() => {
+                toggleModal()
+              }}
+              className="flex items-center rounded-[18px] px-3 py-0.5 gap-2 bg-button-primary hover:bg-button-primary-hover"
+            >
               <PiPlusCircleLight
                 color="white"
                 size={22}

@@ -9,9 +9,17 @@ import {
   PiPlusCircleLight,
 } from 'react-icons/pi'
 import { HiOutlineSun } from 'react-icons/hi'
-import { Options } from './components/show-options'
+import { Options } from './components/Show-Options'
+import { useState } from 'react'
+import { ModalRegister } from './components/Modal'
 
 function App() {
+  const [modalIsOpen, setModalIsOpen] = useState<boolean>(false)
+
+  const toggleModal = () => {
+    setModalIsOpen(!modalIsOpen)
+  }
+
   return (
     <main className="w-full h-[100vh] flex flex-row">
       <section className="flex flex-col items-center  justify-between w-[85px] p-8 bg-primary ">
@@ -83,15 +91,18 @@ function App() {
             amount={23}
             buttonAddCustomer={true}
             buttonLinker="link"
+            toggleModal={toggleModal}
           />
           <Options
             title="Carteira do Fulano"
             amount={23}
             buttonAddCustomer={false}
             buttonLinker="unlink"
+            toggleModal={toggleModal}
           />
         </div>
       </section>
+      {modalIsOpen && <ModalRegister toggleModal={toggleModal} />}
     </main>
   )
 }
