@@ -35,3 +35,8 @@ export interface ClientInterface {
       }
     | undefined
 }
+
+export interface linkUnlinkProps {
+  assistantId?: string
+  clientId: string
+}

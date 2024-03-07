@@ -5,6 +5,7 @@ import {
 } from 'react-icons/pi'
 import { CiSearch } from 'react-icons/ci'
 import { ClientsInterface } from '../../interfaces/DatasInterface'
+import { useState } from 'react'
 
 type OptionsProps = {
   title: string
@@ -12,7 +13,9 @@ type OptionsProps = {
   buttonAddCustomer: boolean
   buttonLinker: 'link' | 'unlink'
   toggleModal: () => void
+  linkUnlinkClients: (listClientsId: string[], assistantId?: string) => void
   clients: ClientsInterface[]
+  assistantId?: string
 }
 
 export const Options = ({
@@ -22,7 +25,11 @@ export const Options = ({
   buttonLinker,
   toggleModal,
   clients,
+  linkUnlinkClients,
+  assistantId,
 }: OptionsProps) => {
+  const [clientsIds, setClientsIds] = useState<string[]>([])
+
   const text = buttonLinker === 'link' ? 'Vincular' : 'Desvincular'
   const buttonColorCustomer =
     buttonLinker === 'link'
@@ -38,6 +45,17 @@ export const Options = ({
         className="text-button-cancel-primary"
       />
     )
+
+  const editClientsIds = (clientId: string) => {
+    const idIndex = clientsIds.findIndex((item) => item === clientId)
+    let clientsIdsLet = clientsIds
+    if (idIndex) {
+      clientsIdsLet.splice(idIndex, 1)
+    } else {
+      clientsIdsLet.push(clientId)
+    }
+    setClientsIds(clientsIdsLet)
+  }
 
   return (
     <div className="flex flex-col gap-3  text-nowrap bg-primary rounded-xl p-6 ">
@@ -66,6 +84,7 @@ export const Options = ({
             </button>
           )}
           <button
+            onClick={() => console.log(clientsIds, assistantId)}
             className={`flex rounded-[18px] px-3 py-0.5 gap-2 ${buttonColorCustomer}`}
           >
             {text}
@@ -95,28 +114,30 @@ export const Options = ({
             <span>Rede</span>
           </div>
         </div>
-        {clients.map(({ _id, props }) => {
-          return (
-            <div
-              key={`${_id.value}`}
-              className="h-[45px] w-full flex items-center justify-between p-4 border-gray-300 border-[1px] rounded-[18px]"
-            >
-              <div className="flex flex-row gap-4">
-                <input
-                  type="checkbox"
-                  name={props.name}
-                  id={_id.value}
-                  className="bg-button-primary"
-                />
-                <span>{props.code}</span>
-                <span>{props.name}</span>
+        {clients.length > 0 &&
+          clients.map(({ _id, props }) => {
+            return (
+              <div
+                key={`${_id.value}`}
+                className="h-[45px] w-full flex items-center justify-between p-4 border-gray-300 border-[1px] rounded-[18px]"
+              >
+                <div className="flex flex-row gap-4">
+                  <input
+                    type="checkbox"
+                    onChange={() => _id.value && editClientsIds(_id.value)}
+                    name={props.name}
+                    id={_id.value}
+                    className="bg-button-primary"
+                  />
+                  <span>{props.code}</span>
+                  <span>{props.name}</span>
+                </div>
+                <div>
+                  <span>{props.network}</span>
+                </div>
               </div>
-              <div>
-                <span>{props.network}</span>
-              </div>
-            </div>
-          )
-        })}
+            )
+          })}
       </div>
     </div>
   )

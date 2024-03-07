@@ -3,6 +3,7 @@ import {
   AssistantsInterface,
   ClientInterface,
   ClientsInterface,
+  linkUnlinkProps,
 } from '../../interfaces/DatasInterface'
 import { getClientsLinkedInterface } from '../../interfaces/FunctionInterface'
 
@@ -45,6 +46,14 @@ export const createClient = async ({
     network,
   })
 
+  return data.data && data.data.client
+}
+
+export const linkUnlinkClient = async ({
+  assistantId,
+  clientId,
+}: linkUnlinkProps) => {
+  const { data } = await apiURL.patch(`/clients/${clientId}/${assistantId}`)
   return data.data && data.data.client
 }
 

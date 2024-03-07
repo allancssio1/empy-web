@@ -13,6 +13,7 @@ import {
   getAssistants,
   getClientsLinked,
   getClientsUnlinked,
+  linkUnlinkClient,
 } from './components/functions'
 import { Menu } from './components/Menu'
 import { ModalNewAssistant } from './components/ModalNewAssistant'
@@ -21,8 +22,18 @@ function App() {
   const [modalNewClentIsOpen, setModalNewClentIsOpen] = useState<boolean>(false)
   const [modalNewAssistantIsOpen, setModalNewAssistantIsOpen] =
     useState<boolean>(false)
-  const [newClientCreated, setNewClientCreated] = useState<number>(0)
   const [assistants, setAssistants] = useState<AssistantsInterface[]>([])
+  const [assistantSelected, setAssistantSelected] =
+    useState<AssistantsInterface>({
+      _id: {
+        value: undefined,
+      },
+      props: {
+        name: undefined,
+        phone: undefined,
+        email: undefined,
+      },
+    })
   const [assistant, setAssistant] = useState<AssistantsInterface>({
     _id: {
       value: undefined,
@@ -111,6 +122,18 @@ function App() {
     setAssistant({ ...assistant, props: { ...assistant.props, [name]: value } })
   }
 
+  const linkUnlinkClients = async (
+    listClientsId: string[],
+    assistantId?: string,
+  ) => {
+    listClientsId.forEach(async (clientId) => {
+      await linkUnlinkClient({
+        assistantId: assistantId ?? assistantSelected._id.value,
+        clientId,
+      })
+    })
+  }
+
   return (
     <main className="w-full h-[100vh] flex flex-row">
       <Menu />
@@ -124,10 +147,21 @@ function App() {
                 id="assitent"
                 className=" bg-primary w-full inline-block border-none outline-none "
                 name="assitent"
-                onChange={(e) => console.log(e)}
+                onChange={(e) => {
+                  const assistantFounded =
+                    assistants.find(
+                      (item) => item._id.value === e.target.value,
+                    ) ?? assistantSelected
+
+                  setAssistantSelected(assistantFounded)
+                }}
               >
                 {assistants.map(({ _id, props }) => {
-                  return <option value={_id.value}>{props.name}</option>
+                  return (
+                    <option value={_id.value} key={_id.value}>
+                      {props.name}
+                    </option>
+                  )
                 })}
               </select>
             </div>
@@ -143,19 +177,22 @@ function App() {
         <div className="grid grid-cols-2 gap-6 h-full">
           <Options
             title="Clientes (Não vinculadao)"
-            amount={23}
+            amount={clientsUnlinked.length}
             buttonAddCustomer={true}
             buttonLinker="link"
             toggleModal={toggleModalNewClient}
             clients={clientsUnlinked}
+            linkUnlinkClients={linkUnlinkClients}
           />
           <Options
-            title="Carteira do Fulano"
-            amount={23}
+            title={`Carteira de ${assistantSelected.props.name ?? ''}`}
+            amount={clientsLinked.length}
             buttonAddCustomer={false}
             buttonLinker="unlink"
             toggleModal={toggleModalNewClient}
             clients={clientsLinked}
+            linkUnlinkClients={linkUnlinkClients}
+            assistantId={assistantSelected._id.value}
           />
         </div>
       </section>
