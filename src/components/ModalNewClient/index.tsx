@@ -1,8 +1,14 @@
 type ModalProps = {
   toggleModal: () => void
+  saveClient: () => void
+  setClientData: (target: 'name' | 'network' | 'code', value: string) => void
 }
 
-export const ModalRegister = ({ toggleModal }: ModalProps) => {
+export const ModalNewClient = ({
+  toggleModal,
+  setClientData,
+  saveClient,
+}: ModalProps) => {
   return (
     <div className="absolute w-full h-full bg-gray-900 bg-opacity-40 flex justify-center items-center text-neutral-950">
       <div className="flex flex-col  gap-3 bg-primary w-[800px] h-[479px] p-6 opacity-100 rounded-lg">
@@ -12,6 +18,7 @@ export const ModalRegister = ({ toggleModal }: ModalProps) => {
             <label htmlFor="">Código</label>
             <input
               type="text"
+              onChange={(e) => setClientData('code', e.target.value)}
               placeholder="Digite aqui"
               className="h-[43px] w-full rounded-xl p-3 outline-none border-[1px] border-gray-200 hover:border-gray-400 text-sm focus:border-gray-500"
             />
@@ -20,6 +27,7 @@ export const ModalRegister = ({ toggleModal }: ModalProps) => {
             <label htmlFor="">Nome do Cliente</label>
             <input
               type="text"
+              onChange={(e) => setClientData('name', e.target.value)}
               placeholder="Digite aqui"
               className="h-[43px] w-full rounded-xl p-3 outline-none border-[1px] border-gray-200 hover:border-gray-400 text-sm focus:border-gray-500"
             />
@@ -28,6 +36,7 @@ export const ModalRegister = ({ toggleModal }: ModalProps) => {
             <label htmlFor="">Rede</label>
             <input
               type="text"
+              onChange={(e) => setClientData('network', e.target.value)}
               placeholder="Digite aqui"
               className="h-[43px] w-full rounded-xl p-3 outline-none border-[1px] border-gray-200 hover:border-gray-400 text-sm focus:border-gray-500"
             />
@@ -42,7 +51,10 @@ export const ModalRegister = ({ toggleModal }: ModalProps) => {
           </button>
           <button
             className="bg-button-primary hover:bg-button-primary-hover w-48 py-1 rounded-3xl  "
-            onClick={() => toggleModal()}
+            onClick={async () => {
+              await saveClient()
+              toggleModal()
+            }}
           >
             salvar
           </button>

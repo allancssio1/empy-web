@@ -4,6 +4,7 @@ import {
   PiArrowCircleRight,
 } from 'react-icons/pi'
 import { CiSearch } from 'react-icons/ci'
+import { ClientsInterface } from '../../interfaces/DatasInterface'
 
 type OptionsProps = {
   title: string
@@ -11,6 +12,7 @@ type OptionsProps = {
   buttonAddCustomer: boolean
   buttonLinker: 'link' | 'unlink'
   toggleModal: () => void
+  clients: ClientsInterface[]
 }
 
 export const Options = ({
@@ -19,6 +21,7 @@ export const Options = ({
   buttonAddCustomer,
   buttonLinker,
   toggleModal,
+  clients,
 }: OptionsProps) => {
   const text = buttonLinker === 'link' ? 'Vincular' : 'Desvincular'
   const buttonColorCustomer =
@@ -37,7 +40,7 @@ export const Options = ({
     )
 
   return (
-    <div className="flex flex-col gap-3  bg-primary rounded-xl p-6 ">
+    <div className="flex flex-col gap-3  text-nowrap bg-primary rounded-xl p-6 ">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-5">
           <h3 className="text-1xl font-semibold">{title}</h3>
@@ -92,24 +95,24 @@ export const Options = ({
             <span>Rede</span>
           </div>
         </div>
-        {Array.from({ length: 10 }).map((_, index) => {
+        {clients.map(({ _id, props }) => {
           return (
             <div
-              key={`${index}`}
+              key={`${_id.value}`}
               className="h-[45px] w-full flex items-center justify-between p-4 border-gray-300 border-[1px] rounded-[18px]"
             >
               <div className="flex flex-row gap-4">
                 <input
                   type="checkbox"
-                  name="client-1"
-                  id="cleint-1"
+                  name={props.name}
+                  id={_id.value}
                   className="bg-button-primary"
                 />
-                <span>XX30-2</span>
-                <span>Cliente XYZ</span>
+                <span>{props.code}</span>
+                <span>{props.name}</span>
               </div>
               <div>
-                <span>Rede 2</span>
+                <span>{props.network}</span>
               </div>
             </div>
           )

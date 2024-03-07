@@ -1,69 +1,119 @@
-import { BsPieChart } from 'react-icons/bs'
-import {
-  PiWallet,
-  PiToolbox,
-  PiStorefront,
-  PiClipboardText,
-  PiMoneyThin,
-  PiUserCircleLight,
-  PiPlusCircleLight,
-} from 'react-icons/pi'
-import { HiOutlineSun } from 'react-icons/hi'
+import { PiPlusCircleLight } from 'react-icons/pi'
 import { Options } from './components/Show-Options'
-import { useState } from 'react'
-import { ModalRegister } from './components/Modal'
+import { useEffect, useState } from 'react'
+import { ModalNewClient } from './components/ModalNewClient'
+import {
+  AssistantsInterface,
+  ClientInterface,
+  ClientsInterface,
+} from './interfaces/DatasInterface'
+import {
+  createAssistant,
+  createClient,
+  getAssistants,
+  getClientsLinked,
+  getClientsUnlinked,
+} from './components/functions'
+import { Menu } from './components/Menu'
+import { ModalNewAssistant } from './components/ModalNewAssistant'
 
 function App() {
-  const [modalIsOpen, setModalIsOpen] = useState<boolean>(false)
+  const [modalNewClentIsOpen, setModalNewClentIsOpen] = useState<boolean>(false)
+  const [modalNewAssistantIsOpen, setModalNewAssistantIsOpen] =
+    useState<boolean>(false)
+  const [newClientCreated, setNewClientCreated] = useState<number>(0)
+  const [assistants, setAssistants] = useState<AssistantsInterface[]>([])
+  const [assistant, setAssistant] = useState<AssistantsInterface>({
+    _id: {
+      value: undefined,
+    },
+    props: {
+      name: undefined,
+      phone: undefined,
+      email: undefined,
+    },
+  })
+  const [client, setClient] = useState<ClientInterface>({
+    code: undefined,
+    name: undefined,
+    network: undefined,
+    assistantId: undefined,
+  })
+  const [clientsUnlinked, setClientsUnlinked] = useState<ClientsInterface[]>([])
+  const [clientsLinked, setClientsLinked] = useState<ClientsInterface[]>([])
 
-  const toggleModal = () => {
-    setModalIsOpen(!modalIsOpen)
+  useEffect(() => {
+    const initialize = async () => {
+      const listAssistants = await getAssistants()
+      const listClientsUnlinked = await getClientsUnlinked()
+      setAssistants(listAssistants)
+      setClientsUnlinked(listClientsUnlinked)
+    }
+    initialize()
+  }, [])
+
+  useEffect(() => {
+    const clientLinked = async () => {
+      if (assistant) {
+        const listClientsLinked = await getClientsLinked({
+          assistantId: assistant?._id.value,
+        })
+
+        setClientsLinked(listClientsLinked)
+      }
+    }
+    clientLinked()
+  }, [assistant])
+
+  useEffect(() => {
+    ;async () => {
+      const listClientsUnlinked = await getClientsUnlinked()
+      const listCLientsLinked = await getClientsLinked({
+        assistantId: assistant?._id.value,
+      })
+
+      setClientsUnlinked(listClientsUnlinked)
+      setClientsLinked(listCLientsLinked)
+    }
+  }, [client.assistantId])
+
+  const toggleModalNewClient = () => {
+    setModalNewClentIsOpen(!modalNewClentIsOpen)
+  }
+  const toggleModalNewAssistant = () => {
+    setModalNewAssistantIsOpen(!modalNewAssistantIsOpen)
+  }
+
+  const saveClient = async () => {
+    const response = await createClient(client)
+    if (response) {
+      const listClientsUnlinked = await getClientsUnlinked()
+      setClientsUnlinked(listClientsUnlinked)
+    }
+  }
+
+  const saveAssistant = async () => {
+    const response = await createAssistant(assistant)
+    if (response) {
+      const listAssistants = await getAssistants()
+      setAssistants(listAssistants)
+    }
+  }
+
+  const setClientData = (name: 'name' | 'network' | 'code', value: string) => {
+    setClient({ ...client, [name]: value })
+  }
+
+  const setAssistantData = (
+    name: 'name' | 'email' | 'phone',
+    value: string,
+  ) => {
+    setAssistant({ ...assistant, props: { ...assistant.props, [name]: value } })
   }
 
   return (
     <main className="w-full h-[100vh] flex flex-row">
-      <section className="flex flex-col items-center  justify-between w-[85px] p-8 bg-primary ">
-        <div className="">
-          <div className="w-9 mb-8">
-            <img alt="logo" src="/logo.svg" className="size-9" />
-          </div>
-          <div className="flex flex-col items-center py-6 gap-7">
-            <div>
-              <BsPieChart size={24} className="text-gray-600" />
-            </div>
-            <div>
-              <PiWallet size={24} className="text-gray-600" />
-            </div>
-            <div>
-              <PiToolbox size={24} className="text-gray-600" />
-            </div>
-            <div>
-              <PiStorefront size={24} className="text-gray-600" />
-            </div>
-            <div>
-              <PiClipboardText size={24} className="text-gray-600" />
-            </div>
-            <div>
-              <PiMoneyThin size={24} className="text-gray-600" />
-            </div>
-          </div>
-        </div>
-        <div className="flex flex-col items-center  py-6 gap-7">
-          <div>
-            <PiUserCircleLight size={24} className="text-gray-600" />
-          </div>
-          <div>
-            <HiOutlineSun size={24} className="text-gray-600" />
-          </div>
-          <div className="  w-9 h-9 ">
-            <img
-              alt="foto"
-              src="/foto.jpg"
-              className="rounded-full object-cover w-full h-full"
-            />
-          </div>
-        </div>
-      </section>
+      <Menu />
       <section className="flex flex-col w-full p-9 gap-4">
         <h1 className="font-bold text-3xl ">Carteira de Clientes</h1>
         <div className="gap-2">
@@ -74,12 +124,17 @@ function App() {
                 id="assitent"
                 className=" bg-primary w-full inline-block border-none outline-none "
                 name="assitent"
+                onChange={(e) => console.log(e)}
               >
-                <option value="fulano">Fulano</option>
-                <option value="sicrano">Sicrano</option>
+                {assistants.map(({ _id, props }) => {
+                  return <option value={_id.value}>{props.name}</option>
+                })}
               </select>
             </div>
-            <button className="px-4 py-3 rounded-3xl bg-button-primary hover:bg-button-primary-hover">
+            <button
+              onClick={() => toggleModalNewAssistant()}
+              className="px-4 py-3 rounded-3xl bg-button-primary hover:bg-button-primary-hover"
+            >
               <PiPlusCircleLight color="white" size={22} />
             </button>
           </div>
@@ -91,18 +146,33 @@ function App() {
             amount={23}
             buttonAddCustomer={true}
             buttonLinker="link"
-            toggleModal={toggleModal}
+            toggleModal={toggleModalNewClient}
+            clients={clientsUnlinked}
           />
           <Options
             title="Carteira do Fulano"
             amount={23}
             buttonAddCustomer={false}
             buttonLinker="unlink"
-            toggleModal={toggleModal}
+            toggleModal={toggleModalNewClient}
+            clients={clientsLinked}
           />
         </div>
       </section>
-      {modalIsOpen && <ModalRegister toggleModal={toggleModal} />}
+      {modalNewClentIsOpen && (
+        <ModalNewClient
+          toggleModal={toggleModalNewClient}
+          setClientData={setClientData}
+          saveClient={saveClient}
+        />
+      )}
+      {modalNewAssistantIsOpen && (
+        <ModalNewAssistant
+          toggleModal={toggleModalNewAssistant}
+          setAssistantData={setAssistantData}
+          saveAssistant={saveAssistant}
+        />
+      )}
     </main>
   )
 }
