@@ -1,30 +1,33 @@
-# React + TypeScript + Vite
+<h1 align="center">
+  <img src="./public/logo.svg" />
+  <p>Empy Bank</p>
+</h1>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Sobre
+  Uma aplicação para gerenciar a carteira de clientes
+da Empy Bank, permitindo o cadastro de clientes e assistentes comerciais, e a
+associação entre eles.
 
-Currently, two official plugins are available:
+## Tecnologias
+- Vite
+- Typescript
+- Axios
+- TailwindCSS
+- react-icons
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Comandos
 
-## Expanding the ESLint configuration
+### Clone repositório
+- git clone git@github.com:allancssio1/empy-web.git
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### Entre na pasta
+- cd empy-web
 
-- Configure the top-level `parserOptions` property like this:
+ ### Instale as dependencias
+ - npm install
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+ ### Rode a aplicação
+ - npm run dev
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+ ### Acesse em seu navegador
+ - http://localhost:5173/

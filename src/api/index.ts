@@ -1,3 +1,3 @@
 import axios from 'axios'
 
-export const apiURL = axios.create({ baseURL: 'http://localhost:3333' })
+export const apiURL = axios.create({ baseURL: 'https://empy-api.onrender.com' })
