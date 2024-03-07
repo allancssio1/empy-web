@@ -13,7 +13,7 @@ import {
   getAssistants,
   getClientsLinked,
   getClientsUnlinked,
-  linkUnlinkClient,
+  // linkUnlinkClient,
 } from './components/functions'
 import { Menu } from './components/Menu'
 import { ModalNewAssistant } from './components/ModalNewAssistant'
@@ -122,17 +122,17 @@ function App() {
     setAssistant({ ...assistant, props: { ...assistant.props, [name]: value } })
   }
 
-  const linkUnlinkClients = async (
-    listClientsId: string[],
-    assistantId?: string,
-  ) => {
-    listClientsId.forEach(async (clientId) => {
-      await linkUnlinkClient({
-        assistantId: assistantId ?? assistantSelected._id.value,
-        clientId,
-      })
-    })
-  }
+  // const linkUnlinkClients = async (
+  //   listClientsId: string[],
+  //   assistantId?: string,
+  // ) => {
+  //   listClientsId.forEach(async (clientId) => {
+  //     await linkUnlinkClient({
+  //       assistantId: assistantId ?? assistantSelected._id.value,
+  //       clientId,
+  //     })
+  //   })
+  // }
 
   return (
     <main className="w-full h-[100vh] flex flex-row">
@@ -182,7 +182,6 @@ function App() {
             buttonLinker="link"
             toggleModal={toggleModalNewClient}
             clients={clientsUnlinked}
-            linkUnlinkClients={linkUnlinkClients}
           />
           <Options
             title={`Carteira de ${assistantSelected.props.name ?? ''}`}
@@ -191,7 +190,6 @@ function App() {
             buttonLinker="unlink"
             toggleModal={toggleModalNewClient}
             clients={clientsLinked}
-            linkUnlinkClients={linkUnlinkClients}
             assistantId={assistantSelected._id.value}
           />
         </div>

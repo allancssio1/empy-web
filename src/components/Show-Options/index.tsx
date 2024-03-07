@@ -13,7 +13,6 @@ type OptionsProps = {
   buttonAddCustomer: boolean
   buttonLinker: 'link' | 'unlink'
   toggleModal: () => void
-  linkUnlinkClients: (listClientsId: string[], assistantId?: string) => void
   clients: ClientsInterface[]
   assistantId?: string
 }
@@ -25,7 +24,6 @@ export const Options = ({
   buttonLinker,
   toggleModal,
   clients,
-  linkUnlinkClients,
   assistantId,
 }: OptionsProps) => {
   const [clientsIds, setClientsIds] = useState<string[]>([])
